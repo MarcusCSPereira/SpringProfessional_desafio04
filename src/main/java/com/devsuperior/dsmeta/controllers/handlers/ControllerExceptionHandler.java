@@ -1,7 +1,6 @@
 package com.devsuperior.dsmeta.controllers.handlers;
 
 import java.time.Instant;
-import java.time.format.DateTimeParseException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,14 +10,23 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.devsuperior.dsmeta.common.dto.CustomError;
+import com.devsuperior.dsmeta.common.exceptions.DateParseException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
   
-  @ExceptionHandler(DateTimeParseException.class)
-  public ResponseEntity<CustomError> DateTimeParseException(DateTimeParseException e, HttpServletRequest request){
+  @ExceptionHandler(DateParseException.class)
+  public ResponseEntity<CustomError> DateParseException(DateParseException e, HttpServletRequest request){
     HttpStatus status = HttpStatus.BAD_REQUEST;
-    CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+    
+    String path = request.getRequestURI();
+    String queryString = request.getQueryString();
+    
+    if (queryString != null && !queryString.isEmpty()) {
+      path = path + "?" + queryString;
+    }
+    
+    CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), path);
     return ResponseEntity.status(status).body(err);
   }
 }

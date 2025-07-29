@@ -1,5 +1,7 @@
 package com.devsuperior.dsmeta.dto;
 
+import com.devsuperior.dsmeta.entities.Seller;
+
 public class SellerSumaryDTO {
 
   private String name;
@@ -7,6 +9,12 @@ public class SellerSumaryDTO {
 
   public SellerSumaryDTO(String name, Double amount){
     this.name = name;
+    this.amount = amount;
+  }
+
+  // Construtor para facilitar conversão de entidade
+  public SellerSumaryDTO(Seller seller, Double amount) {
+    this.name = seller.getName();
     this.amount = amount;
   }
 

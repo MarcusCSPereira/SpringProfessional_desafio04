@@ -2,6 +2,8 @@ package com.devsuperior.dsmeta.dto;
 
 import java.time.LocalDate;
 
+import com.devsuperior.dsmeta.entities.Sale;
+
 public class SaleReportDTO {
 
 	private Long id;
@@ -16,6 +18,14 @@ public class SaleReportDTO {
 		this.date = date;
 		this.amount = amount;
 		this.sellerName = sellerName;
+	}
+
+	// Construtor para facilitar conversão de entidade
+	public SaleReportDTO(Sale entity) {
+		this.id = entity.getId();
+		this.date = entity.getDate();
+		this.amount = entity.getAmount();
+		this.sellerName = entity.getSeller().getName();
 	}
 
 	public Long getId() {
